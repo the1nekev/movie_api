@@ -1,0 +1,1 @@
+INSERT INTO Users(Username, Password, Email, Birth_Date) VALUES('The1nekev', '1471688Kc@', 'kevin123@gmail.com', '1999-03-11');

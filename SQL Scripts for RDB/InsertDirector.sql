@@ -1,0 +1,1 @@
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('Aaron Horvath', 'Aaron Horvath was born on 19 August 1980 in California, USA.', '1980-08-19');
