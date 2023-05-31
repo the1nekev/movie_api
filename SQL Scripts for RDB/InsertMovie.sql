@@ -1,1 +1,0 @@
-INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('The Shawshank Redemption','Over the course of several years, two convicts form a friendship, seeking consolation and, eventually, redemption through basic compassion.',2,2,'theshawshankredemption.png',False);

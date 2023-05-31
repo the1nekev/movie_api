@@ -1,20 +1,33 @@
-const express = require("express"), 
-    app = express(),    
+const express = require("express"),     
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
+    fs = require('fs'),
+    path = require('path'),
     uuid = require("uuid"),
-    moongose = require('mongoose'),
-    Models = require('./models.js');
+    app = express();
 
-app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
+
+const moongose = require('mongoose');
+const Models = require('./models.js');
+
+app.use(morgan('common'));
 app.use(express.static('public'));
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
-moongose.connect('mongodb://localhost:27017/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});
+moongose.connect('mongodb://localhost:27017/myFlixDB', {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+});
+
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js')
+
+
 
 //Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -29,7 +42,8 @@ app.get('/', (req, res) => {
 });
 
 //GET all movies in JSON format
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', {session: false}),
+(req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -223,4 +237,4 @@ app.delete('/users/:Username',  (req, res) => {
 //listen for requests
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
-}); 
+});
