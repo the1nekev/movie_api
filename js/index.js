@@ -4,6 +4,7 @@ const express = require("express"),
     fs = require('fs'),
     path = require('path'),
     uuid = require("uuid"),
+    { check, validationResult} = require('express-validator');
     app = express();
 
 app.use(bodyParser.json());
@@ -23,9 +24,9 @@ moongose.connect('mongodb://localhost:27017/myFlixDB', {
     useUnifiedTopology: true
 });
 
-let auth = require('./auth.js')(app);
+let auth = require('./auth')(app);
 const passport = require('passport');
-require('./passport.js')
+require('./passport.js');
 
 
 
