@@ -1,0 +1,4 @@
+{"_id":1,"Username":"davidcohen2580","Password":"test123","Email":"davidcohen2580@gmail.com","Birthday":{"$date":"2016-05-02T00:00:00Z"},"FavoriteMovies":[{"$oid":"646d311455a3c56a32fd35e5"}]}
+{"_id":2,"Username":"The1nekev","Password":"1471688Kc@","Email":"kevin123@gmail.com","Birthday":{"$date":"1999-03-11T00:00:00Z"},"FavoriteMovies":["646e709cc81f7ab354acbd80"]}
+{"_id":3,"Username":"Adonilon31","Password":"adoni2005","Email":"adoni123@yahoo.com","Birthday":{"$date":"2005-01-31T00:00:00Z"},"FavoriteMovies":["646d311455a3c56a32fd35e5","646e709cc81f7ab354acbd80"]}
+{"_id":4,"Username":"Bellany15","Password":"159753Br","Email":"bella123@aol.com","Birthday":{"$date":"2022-08-25T00:00:00Z"},"FavoriteMovies":["646e7190c81f7ab354acbd81","646e6289c81f7ab354acbd7c"]}

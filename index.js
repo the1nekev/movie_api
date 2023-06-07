@@ -33,10 +33,13 @@ app.use(express.static('public'));
 const Movies = Models.Movie;
 const Users = Models.User;
 
-moongose.connect('mongodb://localhost:27017/myFlixDB', {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
-});
+// moongose.connect('mongodb://localhost:27017/myFlixDB', {
+//     useNewUrlParser: true, 
+//     useUnifiedTopology: true
+// });
+
+moongose.connect(process.env.CONNECTION_URI ,
+{ useNewUrlParser: true, useUnifiedTopology: true});
 
 let auth = require('./auth')(app);
 const passport = require('passport');
