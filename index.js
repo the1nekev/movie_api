@@ -1,12 +1,12 @@
-const express = require("express"),     
-    morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    fs = require('fs'),
-    path = require('path'),
-    uuid = require("uuid"),
-    cors = require('cors'),
-    { check, validationResult} = require('express-validator');
-    app = express();
+const express = require("express");   
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
+const uuid = require("uuid");
+const cors = require('cors');
+const { check, validationResult} = require('express-validator');
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -33,13 +33,13 @@ app.use(express.static('public'));
 const Movies = Models.Movie;
 const Users = Models.User;
 
-moongose.connect('mongodb://localhost:27017/myFlixDB', {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
-});
+// moongose.connect('mongodb://localhost:27017/myFlixDB', {
+//     useNewUrlParser: true, 
+//     useUnifiedTopology: true
+// });
 
-// moongose.connect(process.env.CONNECTION_URI ,
-// { useNewUrlParser: true, useUnifiedTopology: true});
+moongose.connect(process.env.CONNECTION_URI ,
+{ useNewUrlParser: true, useUnifiedTopology: true});
 
 let auth = require('./auth')(app);
 const passport = require('passport');
@@ -146,42 +146,40 @@ app.get('/movies/Director/:Name', passport.authenticate('jwt', { session: false}
 });
 
 //CREATE Request (Allow new users to register)
-app.post('/users', (req, res) => {
-    [
-    check('Username', 'Username is required').isLength({ min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required.').not().isEmpty(),
+app.post('/users', 
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail()
-    ], (req, res) => {
-        let errors = validationResult(req);
+],(req, res) => {
+    let errors = validationResult(req);
 
-        if (!errors.isEmpty()){
-            return res.status(422).json({ errors: errors.array() });
-        }
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()});
     }
-    
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username})
-    //Search to see if a user with the requested username exists
-    .then((user) => {
-        if (user) {
-            //if user is found, send a response that it already exists
-            return res.status(400).send(req.body.Username + ' already exists.');
-        } else {
+
+    const hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne( { Username: req.body.Username } )
+    .then((user) =>{
+        if(user){
+            return res.status(400).send(req.body.Username + ' already exists');
+        }
+        else{
             Users.create({
                 Username: req.body.Username,
                 Password: hashedPassword,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             })
-            .then((user) => { res.status(201).json(user) })
-            .catch((error) => {
+            .then((user) => {res.status(201).json(user)})
+            .catch((error) =>{
                 console.error(error);
                 res.status(500).send('Error: ' + error);
-            });
+            })
         }
     })
-    .catch((error) => {
+    .catch((error) =>{
         console.error(error);
         res.status(500).send('Error: ' + error);
     });
@@ -194,12 +192,11 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required.').not().isEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail()
-],
-(req, res) => {
+],(req, res) => {
     let errors = validationResult(req);
 
     if(!errors.isEmpty()){
-        return res.status(422).json({ errors: errors.array});
+        return res.status(422).json({ errors: errors.array()});
     }
 
     let hashedPassword = Users.hashPassword(req.body.Password);
