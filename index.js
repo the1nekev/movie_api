@@ -11,7 +11,7 @@ const express = require("express"),
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
-let allowedOrigins = ['http://127.0.0.1:8080','http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080','http://testsite.com'];
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin) return callback(null, true);
@@ -33,7 +33,7 @@ app.use(express.static('public'));
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// moongose.connect('mongodb://127.0.0.1:27017/myFlixDB', {
+// moongose.connect('mongodb://localhost:27017/myFlixDB', {
 //     useNewUrlParser: true, 
 //     useUnifiedTopology: true
 // });
