@@ -10,19 +10,19 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(cors);
-// let allowedOrigins = ['*'];
-// app.use(cors({
-//     origin: (origin, callback) => {
-//         if (!origin) return callback(null, true);
-//         if (allowedOrigins.indexOf(origin) === -1){
-//             //If specified origin isn't found on the list of allowed origins
-//             let message = 'The CORS policy for this app does not allow access from origin ' + origin;
-//             return callback(new Error(message), false);
-//         }
-//         return callback(null, true);
-//     }
-// }));
+
+let allowedOrigins = ['*'];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1){
+            //If specified origin isn't found on the list of allowed origins
+            let message = 'The CORS policy for this app does not allow access from origin ' + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 const moongose = require('mongoose');
 const Models = require('./models.js');
